@@ -50,16 +50,17 @@
 						</tr>
 						<?php
 							/* afficher user filtrer */
-							$status_id = 0;
-							$lettreDebut = '0';
-							
-							
-							$stmt = $pdo->query('SELECT users.id AS id, username, email, name 
+							$status_id = '2';
+							$lettreDebut = 'e';
+							$sql= "SELECT users.id AS id, username, email, name 
 							                     FROM users 
 												 JOIN status 
 												 ON users.status_id = status.id 
-												 
-												');
+												 WHERE status.id ='$status_id'
+												 AND username LIKE '$lettreDebut%' 
+												 ORDER by username";
+							
+							$stmt = $pdo->query($sql);
 												 
 							while ($row = $stmt->fetch()) {
 								echo "<tr>";
