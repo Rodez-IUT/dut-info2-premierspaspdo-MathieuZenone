@@ -3,13 +3,19 @@
   <head>
 		<meta charset="utf-8">
 		<!-- Bootstrap CSS -->
-		<link href="../TD6/site/bootstrap/css/bootstrap.css" rel="stylesheet">
-		<link href="../TD6/site/font-awesome/css/font-awesome.css" rel="stylesheet">
+		<!--<link href="../TD6/site/bootstrap/css/bootstrap.css" rel="stylesheet">-->
+		<link href="../testFonctionnement/bootstrap/css/bootstrap.css" rel="stylesheet">
+		<!--<link href="../TD6/site/font-awesome/css/font-awesome.css" rel="stylesheet">-->
 		<title>script PHP</title>
    </head>
 	
 
- <?php
+
+	
+	
+	<body>
+	
+		 <?php
 			/* link a la BD */
 			$host = 'localhost';
 			$db   = 'my_activities';
@@ -27,10 +33,12 @@
 			} catch (PDOException $e) {
 				 throw new PDOException($e->getMessage(), (int)$e->getCode());
 			}
+			
+			function get($name) {
+				return isset($_GET[$name]) ? $_GET[$name] : null;
+			}
 		?>
-	</head>
-	
-	<body>
+		
 		<!--  -->
 		<div class="container">
 			<div class="row">
@@ -38,6 +46,17 @@
 				<div class="col-xs-12 cadre">
 					<h1>ALL User</h1>
 					
+					<!-- formlaire -->
+					<form action="all_user.php" method="get">
+						Start with letter:
+						<input name="start_letter" type="text" value="<?php echo get("start_letter") ?>">
+						and status is:
+						<select name="status_id">
+							<option value="1" <?php if (get("status_id") == 1) echo 'selected' ?>>Waiting for account validation</option>
+							<option value="2" <?php if (get("status_id") == 2) echo 'selected' ?>>Active account</option>
+						</select>
+						<input type="submit" value="OK">
+					</form>
 
 					
 					<!-- table resultat -->
@@ -50,8 +69,8 @@
 						</tr>
 						<?php
 							/* afficher user filtrer */
-							$status_id = '2';
-							$lettreDebut = 'e';
+							$status_id = get("status_id");
+							$lettreDebut = htmlspecialchars(get("start_letter"));
 							$sql= "SELECT users.id AS id, username, email, name 
 							                     FROM users 
 												 JOIN status 
@@ -76,4 +95,8 @@
 			</div>
 		</div>
 	</body>
+	
+	
+	
+	
 </html>
