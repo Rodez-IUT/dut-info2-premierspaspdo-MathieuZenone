@@ -70,23 +70,23 @@
 						<?php
 							/* afficher user filtrer */
 							$status_id = get("status_id");
-							$lettreDebut = htmlspecialchars(get("start_letter"));
-							$sql= "SELECT users.id AS id, username, email, name 
-							                     FROM users 
-												 JOIN status 
-												 ON users.status_id = status.id 
-												 WHERE status.id ='$status_id'
-												 AND username LIKE '$lettreDebut%' 
-												 ORDER by username";
+							$lettreDebut = htmlspecialchars(get("start_letter").'%');
+							$sql = "select users.id as user_id, username, email, s.name as status 
+									from users 
+									join status s on users.status_id = s.id 
+									where username like :start_letter and status_id = :status_id 
+									order by username";
+							$stmt = $pdo->prepare($sql);
+							$stmt->execute(['start_letter' => $lettreDebut, 'status_id' => $status_id]);
 							
-							$stmt = $pdo->query($sql);
+							
 												 
 							while ($row = $stmt->fetch()) {
 								echo "<tr>";
-									echo "<td>". $row['id'] . "</td>";
+									echo "<td>". $row['user_id'] . "</td>";
 									echo "<td>". $row['username'] . "</td>";
 									echo "<td>". $row['email'] . "</td>";
-									echo "<td>". $row['name'] . "</td>";
+									echo "<td>". $row['status'] . "</td>";
 								echo "</tr>";
 							}
 						?>
