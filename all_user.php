@@ -67,6 +67,11 @@
 							<th>Username</th>
 							<th>Email</th>
 							<th>Status</th>
+							<?php 
+								if (get("status_id") == 1 || get("status_id") == 2){
+									echo "<th>Gestion</th>";
+								}
+							?>
 						</tr>
 						<?php
 							/* afficher user filtrer */
@@ -76,7 +81,7 @@
 									from users 
 									join status s on users.status_id = s.id 
 									where username like :start_letter and status_id = :status_id 
-									order by username";
+									";
 							$stmt = $pdo->prepare($sql);
 							$stmt->execute(['start_letter' => $lettreDebut, 'status_id' => $status_id]);
 							
@@ -88,6 +93,9 @@
 									echo "<td>". $row['username'] . "</td>";
 									echo "<td>". $row['email'] . "</td>";
 									echo "<td>". $row['status'] . "</td>";
+									if (get("status_id") == 1 || get("status_id") == 2){
+										echo "<td><a href = \"all_user.php?user_id=".$row['user_id']."&amp;status_id=3&amp;action=askDeletion\">ask Deletion</a></td>";
+									}
 								echo "</tr>";
 							}
 						?>
