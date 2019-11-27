@@ -54,6 +54,7 @@
 						<select name="status_id">
 							<option value="1" <?php if (get("status_id") == 1) echo 'selected' ?>>Waiting for account validation</option>
 							<option value="2" <?php if (get("status_id") == 2) echo 'selected' ?>>Active account</option>
+							<option value="3" <?php if (get("status_id") == 3) echo 'selected' ?>>Waiting for account deletion</option>
 						</select>
 						<input type="submit" value="OK">
 					</form>
